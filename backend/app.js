@@ -26,6 +26,11 @@ app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
 });
 
+app.use((err, req, res, next) => {
+  const { statusCode = 500, message } = err;
+  res.status(500).send({ message: 'Se ha producido un error en el servidor'});
+});
+
 
 
 
