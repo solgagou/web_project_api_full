@@ -1,40 +1,61 @@
-//const mongoose = require('mongoose');
-const Joi = require('joi');
+const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const User = require('../models/user');
+const validator = require('validator');
 
-
-const userSchema = Joi.object({
-  //body: Joi.object().keys({
-    name: Joi.string().min(2).max(30).default('Jacques Cousteau'),
-    about: Joi.string().min(2).max(30).default('Explorador'),
-    avatar: Joi.string().uri().default('https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg'),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    default: 'Jacques Cousteau',
+    minlength: 2,
+    maxlength: 30,
+  },
+  about: {
+    type: String,
+    default: 'Explorador',
+    minlength: 2,
+    maxlength: 30,
+  },
+  avatar: {
+    type: String,
+    default: 'https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg',
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: (props) => `${props.value} is not a valid URL!`,
+    },
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    validate: {
+      validator: (v) => validator.isEmail(v),
+      message: (props) => `${props.value} is not a valid email!`,
+    },
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false
+  },
 });
 
-module.exports = mongoose.model('user', userSchema);
 
-module.exports.createUser = (req, res) => {
-  const { error, value } = userSchema.validate(req.body);
+userSchema.statics.findUserByCredentials = function findUserByCredentials (email, password) {
+  return this.findOne({ email }).select('+password')
+  .then((user) => {
+    if (!user) {
+      return Promise.reject(new Error('Incorrect email or password'));
+    }
 
-  if (error) {
-    return res.status(400).send({ message: error.details[0].message });
-  }
+    return bcrypt.compare(password, user.password)
+      .then((matched) => {
+        if (!matched) {
+          return Promise.reject(new Error('Incorrect email or password'));
+        }
 
-  bcrypt.hash(value.password, 10)
-    .then(hash => {
-      return User.create({
-        name: value.name,
-        about: value.about,
-        avatar: value.avatar,
-        email: value.email,
-        password: hash,
+        return user;
       });
-    })
-    .then(user => res.status(201).send({ data: user }))
-    .catch(err => {
-      const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
-      res.status(ERROR_CODE).send({ message: 'Error al crear el usuario', error: err.message });
-    });
+  });
 };
+
+module.exports = mongoose.model('user', userSchema);

@@ -1,0 +1,104 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 46px 200px auto 200px;
+    position: relative;
+        
+}
+
+
+.header__logo {
+    width: 173px;
+    height: 33px;
+    color: #fff;
+
+}
+
+.header__register-link {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    background: none;        
+    border: none; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.header__login-link {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    background: none;        
+    border: none; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.header__session-state {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center; /* Alinea verticalmente correo y botón */
+    margin-top: 0; 
+}
+
+
+.header__user-email {
+    padding-right: 23px;
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 22px;
+    color: #FFFFFF;
+}
+
+.logout__button {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    color: #A9A9A9;
+    background: none;        
+    border: none; 
+    text-decoration: none;
+    cursor: pointer;
+    text-wrap: nowrap;
+}
+
+.header__line {
+    width: 100%; 
+    margin-top: 120px;
+    opacity: 0.7;
+    border: 1px solid #545454;
+    position: absolute;
+       
+}
+
+@media screen and (min-width: 720px) and (max-width: 880px) {
+   
+  
+
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    
+    
+    .header__logo {
+        width: 126px;
+        height: 24px;
+        margin: 28px auto 42px auto;
+    
+    }
+    
+    
+    .header__line {
+        width: 90%;
+        
+        
+    }
+    
+    
+}

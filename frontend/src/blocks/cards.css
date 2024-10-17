@@ -1,0 +1,125 @@
+.cards {
+  gap: 17px;
+  min-height: 60vh;
+  max-width: 880px;
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  align-items: flex-start;
+}
+
+.card {
+  height: 361px;
+  width: 282px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
+  list-style: none;
+  overflow: hidden;
+}
+
+.card__image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 282px;
+  height: 300px;
+  z-index: 0;
+  background-size: 400px 300px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.card__info {
+  display: flex;
+  /*flex-direction: row;*/
+
+}
+
+.card__delete-button {
+  width: 18px;
+  height: 19px;
+  position: relative;
+  right: -250px;
+  top: -290px;
+}
+
+.card__delete-button:hover {
+  background-image: url("../images/gray_trash.png");
+}
+
+.card__delete-button_hidden {
+  display: none;
+}
+
+.card__delete-button_visible {
+  display: block;
+}
+
+.card__title {
+  font-family: "Inter";
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 29px;
+  letter-spacing: 0em;
+  color: #000;
+  background-color: #fff;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: auto auto auto 21px;
+}
+
+.card-like-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto 18px auto auto;
+}
+
+.card__like-button {
+  border: none;
+  background-color: #fff;
+  width: 21px;
+  height: 19px;
+  background-image: url("../images/gray_heart.png");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.card__like-number {
+  font-family: "Inter";
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  color: #000;
+  background-color: #fff;
+  margin-top: 3px;
+}
+
+.card__like-button_active {
+  background-image: url("../images/black_heart.png");
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .cards {
+    flex-direction: column;
+    margin: auto;
+    padding: 0;
+  }
+ 
+
+  .card__info {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .card__like-button {
+    border: none;
+    background-color: #fff;
+    width: 21px;
+    height: 18px;
+    margin: auto 20px auto auto;
+  }
+}

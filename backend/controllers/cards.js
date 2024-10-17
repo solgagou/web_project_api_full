@@ -1,17 +1,17 @@
 const Card = require('../models/card');
 
 module.exports.getCards = (req, res) => {
-  console.log("getCards called");
   Card.find()
-    .then(cards => res.send({ data: cards }))
+    .populate('owner')
+    .then(cards => res.send(cards))
     .catch(err => res.status(500).send({ message: 'Error al obtener las tarjetas' }));
 };
 
 module.exports.createCard = (req, res) => {
    const { name, link, owner: _id } = req.body;
 
-  Card.create({ name, link, owner: _id })
-  .then(card => res.status(201).send({ data: card }))
+  Card.create({ name, link, owner })
+  .then(card => res.status(201).send(card))
   .catch(err => {
     const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
     res.status(ERROR_CODE).send({ message: 'Error al crear la tarjeta' });
@@ -21,13 +21,20 @@ module.exports.createCard = (req, res) => {
 module.exports.deleteCard = (req, res) => {
   const { cardId } = req.params;
 
-  Card.findByIdAndRemove(cardId)
+  Card.findById(cardId)
   .orFail(() => {
     const error = new Error("Tarjeta no encontrada");
     error.statusCode = 404;
     throw error;
     })
-    .then(card => res.send({ message: 'Tarjeta eliminada', data: card }))
+    .then(card => {
+      if (card.owner.toString() !== req.user._id.toString()) {
+        return res.status(403).send({ message: 'No tienes permisos para eliminar esta tarjeta.' });
+      }
+
+     return Card.findByIdAndRemove(cardId)
+    .then(() => res.send({ message: 'Tarjeta eliminada exitosamente' }));
+    })
     .catch(err => {
       const ERROR_CODE = err.statusCode || 500;
       res.status(ERROR_CODE).send({ message: err.message || 'Error al eliminar la tarjeta' });
@@ -44,7 +51,7 @@ module.exports.likeCard = (req, res) => {
     if (!card) {
       return res.status(404).send({ message: 'Tarjeta no encontrada' });
     }
-    res.send({ data: card });
+    res.send(card);
   })
   .catch(err => {
     if (err.name === 'CastError') {
@@ -64,7 +71,7 @@ module.exports.dislikeCard = (req, res) => {
     if (!card) {
       return res.status(404).send({ message: 'Tarjeta no encontrada' });
     }
-    res.send({ data: card });
+    res.send(card);
   })
   .catch(err => {
     if (err.name === 'CastError') {

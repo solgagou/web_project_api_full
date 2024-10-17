@@ -1,10 +1,20 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
+
+const userSchema = Joi.object({
+    name: Joi.string().min(2).max(30).default('Jacques Cousteau'),
+    about: Joi.string().min(2).max(30).default('Explorador'),
+    avatar: Joi.string().uri().default('https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg'),
+    email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),
+});
+
 
 module.exports.getAllUsers = (req, res) => {
   User.find()
-    .then(users => res.send({ data: users }))
+    .then(users => res.send(users))
     .catch(err => res.status(500).send({ message: 'Error al obtener los usuarios' }));
 };
 
@@ -15,11 +25,24 @@ module.exports.getUser = (req, res) => {
     error.statusCode = 404;
     throw error;
   })
-  .then(user => res.send({ data: user }))
+  .then(user => res.send(user))
   .catch(err => {
     const ERROR_CODE = err.statusCode || 500;
     res.status(ERROR_CODE).send({ message: err.message || 'Error al obtener el usuario' });
   });
+};
+
+module.exports.getCurrentUser = (req, res) => {
+  User.findById(req.user._id)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'Usuario no encontrado' });
+      }
+      res.send(user);
+    })
+    .catch(err => {
+      res.status(500).send({ message: 'Error al obtener el usuario' });
+    });
 };
 
 module.exports.createUser = (req, res) => {
@@ -27,9 +50,9 @@ module.exports.createUser = (req, res) => {
 
   bcrypt.hash(password, 10)
     .then(hash => {
-    return User.create({ name, about, avatar, email, password });
+    return User.create({ name, about, avatar, email, password: hash, });
     })
-    .then(user => res.status(201).send({ data: user }))
+    .then(user => res.status(201).send(user))
     .catch(err => {
       const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
       res.status(ERROR_CODE).send({ message: 'Error al crear el usuario' });
@@ -39,19 +62,23 @@ module.exports.createUser = (req, res) => {
 module.exports.updateProfile = (req, res) => {
   const { name, about } = req.body;
 
+  /*if (req.user._id !== req.params.userId) {
+    return res.status(403).send({ message: 'No tienes permisos para editar este perfil.' });
+  }*/
+
   User.findByIdAndUpdate(req.user._id,
     { name, about },
-    { new: true, runValidators: true, upsert: true }
+    { new: true, runValidators: true }
   )
   .then(user => {
     if (!user) {
       return res.status(404).send({ message: 'Usuario no encontrado' });
     }
-    res.send({ data: user });
+    res.send(user);
   })
   .catch(err => {
     const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
-    res.status(ERROR_CODE).send({ message: 'Error al actualizar el avatar' });
+    res.status(ERROR_CODE).send({ message: 'Error al actualizar el perfil' });
   });
 };
 
@@ -60,13 +87,13 @@ module.exports.updateAvatar = (req, res) => {
 
   User.findByIdAndUpdate(req.user._id,
     { avatar },
-    { new: true, runValidators: true, upsert: true }
+    { new: true, runValidators: true }
   )
   .then(user => {
     if (!user) {
       return res.status(404).send({ message: 'Usuario no encontrado' });
     }
-    res.send({ data: user });
+    res.send(user);
   })
   .catch(err => {
     const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;

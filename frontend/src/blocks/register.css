@@ -1,0 +1,105 @@
+.register {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.register__header {
+    background-color: #000;
+    margin-top: 45px;
+}
+
+.register__header-info {
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between;
+    margin: auto 320px;
+   
+}
+
+.header__logo {
+    width: 173px;
+    height: 33px;
+    color: #fff;
+    margin-left: 0;
+   
+  
+}
+
+.header__login-link {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    color: #FFFFFF;
+    background: none;        
+    border: none; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.register__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register__title {
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 29px;
+    color: #FFFFFF; 
+    margin-top: 110px;
+}
+
+.register__form {
+    margin-top: 50px;
+    flex-direction: column;
+    display: flex;
+}
+
+.form__input {
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    letter-spacing: 0em;
+    border-bottom: 2px solid #CCCCCC; 
+    background-color: #000;
+    color: white;
+  }
+
+  .register__footer {
+    margin: 140px auto 80px auto;
+
+}
+
+.register__button {
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    text-align: center;
+    width: 358px;
+    height: 50px;
+    cursor: pointer;
+    
+
+}
+
+
+.footer__login-link {
+    display: block;
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: center;
+    color: #FFFFFF;
+    margin-top: 15px;
+    color: #FFFFFF;
+    background: none;        
+    border: none; 
+    text-decoration: none;
+    cursor: pointer;
+}
