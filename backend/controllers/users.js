@@ -2,50 +2,10 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
+const validator = require('validator');
+const { celebrate } = require('celebrate');
 
-const userSchema = Joi.object({
-    name: Joi.string().min(2).max(30).default('Jacques Cousteau'),
-    about: Joi.string().min(2).max(30).default('Explorador'),
-    avatar: Joi.string().uri().default('https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg'),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
-});
-
-
-module.exports.getAllUsers = (req, res) => {
-  User.find()
-    .then(users => res.send(users))
-    .catch(err => res.status(500).send({ message: 'Error al obtener los usuarios' }));
-};
-
-module.exports.getUser = (req, res) => {
-  User.findById(req.params.userId)
-  .orFail(() => {
-    const error = new Error("Usuario no encontrado");
-    error.statusCode = 404;
-    throw error;
-  })
-  .then(user => res.send(user))
-  .catch(err => {
-    const ERROR_CODE = err.statusCode || 500;
-    res.status(ERROR_CODE).send({ message: err.message || 'Error al obtener el usuario' });
-  });
-};
-
-module.exports.getCurrentUser = (req, res) => {
-  User.findById(req.user._id)
-    .then(user => {
-      if (!user) {
-        return res.status(404).send({ message: 'Usuario no encontrado' });
-      }
-      res.send(user);
-    })
-    .catch(err => {
-      res.status(500).send({ message: 'Error al obtener el usuario' });
-    });
-};
-
-module.exports.createUser = (req, res) => {
+module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
 
   bcrypt.hash(password, 10)
@@ -53,13 +13,44 @@ module.exports.createUser = (req, res) => {
     return User.create({ name, about, avatar, email, password: hash, });
     })
     .then(user => res.status(201).send(user))
-    .catch(err => {
+    .catch(next); /* antes: (err => {
       const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
-      res.status(ERROR_CODE).send({ message: 'Error al crear el usuario' });
-    });
+      res.status(ERROR_CODE).send({ message: 'Error al crear el usuario' }); */
 };
 
-module.exports.updateProfile = (req, res) => {
+module.exports.getAllUsers = (req, res, next) => {
+  User.find()
+    .then(users => res.send(users))
+    .catch(next); //antes: (err => res.status(500).send({ message: 'Error al obtener los usuarios' }));
+};
+
+module.exports.getUser = (req, res, next) => {
+  User.findById(req.params.userId)
+  .orFail(() => {
+    const error = new Error("Usuario no encontrado");
+    error.statusCode = 404;
+    throw error;
+  })
+  .then(user => res.send(user))
+  .catch(next); /*antes:  {
+    const ERROR_CODE = err.statusCode || 500;
+    res.status(ERROR_CODE).send({ message: err.message || 'Error al obtener el usuario' });*/
+};
+
+module.exports.getCurrentUser = (req, res, next) => {
+  User.findById(req.user._id)
+    .then(user => {
+      if (!user) {
+        return res.status(404).send({ message: 'Usuario no encontrado' });
+      }
+      res.send(user);
+    })
+    .catch(next); /* antes: err => {
+      res.status(500).send({ message: 'Error al obtener el usuario' });
+    }); */
+};
+
+module.exports.updateProfile = (req, res, next) => {
   const { name, about } = req.body;
 
   /*if (req.user._id !== req.params.userId) {
@@ -76,13 +67,12 @@ module.exports.updateProfile = (req, res) => {
     }
     res.send(user);
   })
-  .catch(err => {
+  .catch(next); /* antes: {
     const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
-    res.status(ERROR_CODE).send({ message: 'Error al actualizar el perfil' });
-  });
+    res.status(ERROR_CODE).send({ message: 'Error al actualizar el perfil' }); */
 };
 
-module.exports.updateAvatar = (req, res) => {
+module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
 
   User.findByIdAndUpdate(req.user._id,
@@ -95,13 +85,12 @@ module.exports.updateAvatar = (req, res) => {
     }
     res.send(user);
   })
-  .catch(err => {
+  .catch(next); /* antes:  {
     const ERROR_CODE = err.name === 'ValidationError' ? 400 : 500;
-    res.status(ERROR_CODE).send({ message: 'Error al actualizar el avatar' });
-  });
+    res.status(ERROR_CODE).send({ message: 'Error al actualizar el avatar' }); */
 }
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -110,10 +99,6 @@ module.exports.login = (req, res) => {
 
       res.send({ token });
     })
-    .catch((err) => {
-      res
-        .status(401)
-        .send({ message: err.message });
-    });
+    .catch(next); //antes: error 401
 };
 

@@ -1,10 +1,11 @@
 const Card = require('../models/card');
+//const validator = require('validator');
 
 module.exports.getCards = (req, res, next) => {
   Card.find()
     .populate('owner')
     .then(cards => res.send(cards))
-    .catch(next);
+    .catch(next); // antes: (err => res.status(500).send({ message: 'Error al obtener las tarjetas' }));
 };
 
 module.exports.createCard = (req, res, next) => {

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const Joi = require('joi');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -57,5 +58,6 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials (email
       });
   });
 };
+
 
 module.exports = mongoose.model('user', userSchema);

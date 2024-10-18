@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const cardIdSchema = {
+  params: Joi.object().keys({
+    cardId: Joi.string().length(24).hex().required(), // Ejemplo para un ObjectId de MongoDB
+  }),
+};
+
+
+
 const cardSchema = new mongoose.Schema({
   name: {
     type: String,
