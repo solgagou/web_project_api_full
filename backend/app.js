@@ -7,6 +7,8 @@ const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const { celebrate, Joi, errors } = require('celebrate');
 const { validateUser } = require('./middlewares/validators');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+
 
 const app = express();
 
@@ -33,6 +35,8 @@ app.use(auth);
 
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
+
+app.use(requestLogger);
 
 app.use(errors());
 app.use(errorHandler);
