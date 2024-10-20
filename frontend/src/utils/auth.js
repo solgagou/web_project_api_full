@@ -56,22 +56,28 @@ export const login = (email, password) => {
   });
 };
 
-  export const getUserProfile = async (token) => {
-    const response = await fetch(`${BASE_URL}/users/me`, {
+  export const getUserProfile = (token) => {
+    return fetch(`${BASE_URL}/users/me`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`, 
         "Content-Type": "application/json",
       },
     })
+      .then((response) => {
         if (!response.ok) {
           throw new Error("No se pudo obtener el perfil del usuario");
         }
-        return await response.json();
+        return response.json();
+      })
+      .catch((err) => {
+        console.error("Error obteniendo el perfil del usuario:", err);
+      });
   };
 
-  export const setUserInfo = async (data) => {
-    const response = await fetch(`${BASE_URL}/users/me`, {
+  export const setUserInfo = (data) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/users/me`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -82,15 +88,20 @@ export const login = (email, password) => {
         about: data.about,
       }),
     })
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    return await response.json();
-  };
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      console.error("Error actualizando la información del usuario:", err);
+    });
+};
 
-  export const setUserAvatar = async (data) => {
-    const response = await fetch(`${BASE_URL}/users/me/avatar`, {
+  export const setUserAvatar = (data) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/users/me/avatar`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -100,31 +111,40 @@ export const login = (email, password) => {
         avatar: data.avatar,
       }),
     })
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    return await response.json();
-  };
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error: ${res.status}`);
+      }
+      return res.json();
+    })
+    .catch((err) => {
+      console.error("Error actualizando el avatar:", err);
+    });
+};
 
-  export const getInitialCards = async () => {
-    const response = await fetch(`${BASE_URL}/cards`, {
+  export const getInitialCards = () => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/cards`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    const cards = await response.json();
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      })
+      .then((cards) => {
         // Ordenado por _id (inform de tiempo) porque con createdAt no se puede, ya que no controlo el backend
-    return cards.sort((a, b) => b._id.localeCompare(a._id));
-    };
+        return cards.sort((a, b) => b._id.localeCompare(a._id));
+      });
+  };
 
-  export const addPlace = async (data) => {
-    const response = await fetch(`${BASE_URL}/cards`, {
+  export const addPlace = (data) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/cards`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -134,42 +154,46 @@ export const login = (email, password) => {
         name: data.name,
         link: data.link,
       }),
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    return await response.json();
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      });
   };
   
-  export const changeLikeCardStatus = async (cardId, like) => {
+  export const changeLikeCardStatus = (cardId, like) => {
+    const token = localStorage.getItem("jwt");
     const method = like ? "PUT" : "DELETE";
-    const response = await fetch(`${BASE_URL}/cards/likes/${cardId}`, {
+    return fetch(`${BASE_URL}/cards/likes/${cardId}`, {
       method,
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    });
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    return await response.json();
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      });
   };
 
-  export const deleteCard = async (cardId) => {
-    const response = await fetch(`${BASE_URL}/cards/${cardId}`, {
+  export const deleteCard = (cardId) => {
+    const token = localStorage.getItem("jwt");
+    return fetch(`${BASE_URL}/cards/${cardId}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-  
-    return await response.json();
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`Error: ${res.status}`);
+      });
   };

@@ -36,7 +36,7 @@ function ImagePopup({ name, link, isOpen, onClose }) {
         src={closeIcon}
         onClick={onClose} 
         id="close-image-button"
-        alt="an image of a close button"
+        alt="a close button"
       />
       <img className="popup__image" 
       src={link} 

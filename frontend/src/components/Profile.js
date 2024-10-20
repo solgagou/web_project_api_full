@@ -14,7 +14,7 @@ return (
     <div className="profile__photo">
       <img
       src={currentUser.avatar} 
-      alt="a photo of Jack Cousteau with a red hat"
+      alt="Jack Cousteau with a red hat"
       className="profile__photo profile__avatar"
       />
       <img src={editIcon} className="profile__avatar-edit-icon" onClick={props.onEditAvatarClick} />
