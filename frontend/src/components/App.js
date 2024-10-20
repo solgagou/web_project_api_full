@@ -42,18 +42,18 @@
     const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
     const [registrationSuccess, setRegistrationSuccess] = React.useState(false);
     const navigate = useNavigate();
-    const [token, setToken] = React.useState(localStorage.getItem("jwt") || "");
     
+
     const checkAuth = async () => {
-      const storedToken = localStorage.getItem("jwt");
-      if (storedToken) {
+      const token = localStorage.getItem("jwt");
+      if (token) {
         try { 
-          const userData = await auth.getUserProfile(storedToken);
+          const userData = await auth.getUserProfile(token);
           if (userData) {
             setCurrentUser(userData);
             setIsLoggedIn(true);
-            setToken(storedToken);
-           }
+           //navigate("/users/me"); 
+            }
           } catch (err) {
             console.error("Error verificando token:", err);
             setIsLoggedIn(false);
@@ -92,7 +92,7 @@
     React.useEffect(() => {
       const fetchCards = async () => {
         try {
-          const cardsData = await auth.getInitialCards(token) 
+          const cardsData = await auth.getInitialCards() 
           setCards(cardsData);  
         } catch (err) {
           console.error("Error al cargar las tarjetas:", err);
@@ -100,7 +100,7 @@
       };
     
       fetchCards(); 
-    }, [token]); 
+    }, []); 
     
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);
@@ -131,7 +131,7 @@
 
     async function handleUpdateUser(userData) {
       try {
-        const updatedUser = await auth.setUserInfo(userData, token)
+        const updatedUser = await auth.setUserInfo(userData)
         setCurrentUser(updatedUser);
         handleCloseAllPopups();
       } catch(err) {
@@ -140,7 +140,7 @@
     }
     
     function handleUpdateAvatar(avatar) {
-      auth.setUserAvatar({avatar}, token)
+      auth.setUserAvatar({avatar})
       .then((updatedUser) => {
         setCurrentUser(updatedUser);
         handleCloseAllPopups();
@@ -151,7 +151,7 @@
     }
 
     function handleAddPlaceSubmit(card) {
-      auth.addPlace(card, token)
+      auth.addPlace(card)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         handleCloseAllPopups();
@@ -169,7 +169,7 @@
       });
   }
     function handleCardDelete(card) {
-    auth.deleteCard(card._id, token)
+    auth.deleteCard(card._id)
       .then(() => {
         setCards(state => state.filter(c => c._id !== card._id));
         })

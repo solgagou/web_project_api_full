@@ -40,7 +40,7 @@ function Card({ _id, name, link, likes, card, onCardClick, onCardLike, onCardDel
             src={trashIcon}
             onClick={handleDeleteClick}
             id="delete-button"
-            alt="an image of a trash can"
+            alt="a trash can"
           />
           <div className="card__info">
             <p className="card__title">{name}</p>

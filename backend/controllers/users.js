@@ -3,7 +3,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const validator = require('validator');
-const { celebrate } = require('celebrate');
 
 module.exports.createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
