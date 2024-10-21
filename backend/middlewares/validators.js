@@ -1,6 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
-const { cardIdSchema } = require('../models/card');
 
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
