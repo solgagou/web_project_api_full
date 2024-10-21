@@ -1,5 +1,4 @@
 const Card = require('../models/card');
-const Joi = require('joi');
 //const validator = require('validator');
 
 module.exports.getCards = (req, res, next) => {
