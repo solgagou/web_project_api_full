@@ -25,4 +25,3 @@ res.status(statusCode).send({
 });
 };
 
-module.exports = errorHandler;
