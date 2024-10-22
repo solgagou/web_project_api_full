@@ -45,6 +45,7 @@
     "color-name": "^1.1.4",
     "concat-map": "^0.0.1",
     "confusing-browser-globals": "^1.0.11",
+    "cors": "^2.8.5",
     "cross-spawn": "^7.0.3",
     "data-view-buffer": "^1.0.1",
     "data-view-byte-length": "^1.0.1",

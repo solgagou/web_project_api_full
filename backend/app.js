@@ -8,9 +8,12 @@ const errorHandler = require('./middlewares/errorHandler');
 const { celebrate, Joi, errors } = require('celebrate');
 const { validateUser } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-
+const cors = require('cors');
 
 const app = express();
+
+app.use(cors());
+app.options('*', cors());
 
 app.use(express.json());
 
