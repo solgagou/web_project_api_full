@@ -3,21 +3,22 @@ import closeIcon from '../images/close_icon.png';
 
 function PopupWithForm(props) {
     const popupRef = useRef();
+    const { isOpen, onClose } = props; 
 
     useEffect(() => {
         const closeOnEscape = (e) => {
             if (e.key === 'Escape') {
-                props.onClose();
+                onClose();
             }
         };
 
         const closeOnClickOutside = (e) => {
             if (popupRef.current && !popupRef.current.contains(e.target)) {
-                props.onClose();
+                onClose();
             }
         };
 
-        if (props.isOpen) {
+        if (isOpen) {
             document.addEventListener('keydown', closeOnEscape);
             document.addEventListener('mousedown', closeOnClickOutside);
         }
@@ -26,7 +27,7 @@ function PopupWithForm(props) {
             document.removeEventListener('keydown', closeOnEscape);
             document.removeEventListener('mousedown', closeOnClickOutside);
         };
-    }, [props.isOpen, props.onClose]);
+    }, [isOpen, onClose]);
 
     return (
         <div className={`popup popup_type_${props.name} ${props.isOpen ? 'popup_opened' : ''}`}>

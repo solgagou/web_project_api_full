@@ -22,6 +22,11 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).send({ message: err.message || 'Error en el servidor' });
 });
 
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('El servidor va a caer');
+  }, 0);
+});
 
 mongoose.connect('mongodb://localhost:27017/aroundb')
 .then(() => console.log('Conectado a MongoDB'))

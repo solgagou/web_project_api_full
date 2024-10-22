@@ -68,7 +68,7 @@ const Register = ({ onRegisterClick }) => {
                             value={password}
                             onChange={handleChange}
                         />
-                        <span className="form__input-error input-job-error"></span>
+                        <span className="form__input-error input-job-error">{error}</span>
                         <div className="register__footer">
                             <button className="register__button" type="submit">Regístrate</button>
                             <Link to="login" className="footer__login-link"> ¿Ya eres miembro? Inicia sesión aquí</Link>
