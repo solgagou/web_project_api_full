@@ -9,6 +9,7 @@ const { celebrate, Joi, errors } = require('celebrate');
 const { validateUser } = require('./middlewares/validators');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const cors = require('cors');
+require('dotenv').config();
 
 const app = express();
 

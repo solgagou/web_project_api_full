@@ -55,6 +55,7 @@
     "define-data-property": "^1.1.4",
     "define-properties": "^1.2.1",
     "doctrine": "^3.0.0",
+    "dotenv": "^16.4.5",
     "enquirer": "^2.4.1",
     "es-abstract": "^1.23.3",
     "es-define-property": "^1.0.0",
