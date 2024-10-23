@@ -42,10 +42,10 @@ app.post('/signup', validateUser, createUser);
 
 app.use(auth);
 
+app.use(requestLogger);
+
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
-
-app.use(requestLogger);
 
 app.use(errors());
 app.use(errorHandler);
