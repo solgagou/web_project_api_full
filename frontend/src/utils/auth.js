@@ -1,4 +1,4 @@
-export const BASE_URL = "https://tripleten.desarrollointerno.com";
+export const BASE_URL = "http://aroundthesun.jumpingcrab.com";
 
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
