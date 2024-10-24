@@ -35,7 +35,8 @@ const Login = ({ handleLoginClick }) => {
           console.error('No se recibió el token en la respuesta');
       }
   } catch (err) {
-      console.error('Error al iniciar sesión:', err);
+      console.error('Error al iniciar sesión:', err.message || err);
+      alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
   }
 };
 
