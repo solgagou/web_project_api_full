@@ -50,7 +50,7 @@ app.use('/cards', cardsRouter);
 app.use(errors());
 app.use(errorHandler);
 
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 app.listen(PORT, () => {
   console.log(`App listening at port ${PORT}`);
 });

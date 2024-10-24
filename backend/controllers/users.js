@@ -95,10 +95,15 @@ module.exports.login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
+      console.log('Usuario encontrado:', user);
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET || 'some-secret-key', { expiresIn: '7d' });
 
       res.send({ token });
     })
-    .catch(next); //antes: error 401
+    .catch((error) => {
+      console.log('Error en la autenticación:', error);
+      res.status(400).send({message:error.message})
+      return next()
+    });
 };
 

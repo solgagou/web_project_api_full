@@ -80,7 +80,7 @@
      async function handleLoginClick() {
       setIsLoggedIn(true);
       console.log("Logging in...");
-      checkAuth();
+      await checkAuth();
     }
 
     function handleRegisterClick(isSuccess) {

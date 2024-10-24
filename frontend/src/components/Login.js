@@ -15,29 +15,29 @@ const Login = ({ handleLoginClick }) => {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
       return;
     }
-
-    handleLoginClick(email, password);
       
-    auth.login(email, password)
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('jwt', data.token); 
+   
+    try {
+      const data = await auth.login(email, password); 
+      if (data.token) {
+          localStorage.setItem('jwt', data.token);
 
           setEmail('');
           setPassword('');
 
-          handleLoginClick(); 
-        } else {
+          await handleLoginClick(); 
+      } else {
           console.error('No se recibió el token en la respuesta');
-        }
-      })
-      .catch(err => console.error('Error al iniciar sesión:', err));
-  };
+      }
+  } catch (err) {
+      console.error('Error al iniciar sesión:', err);
+  }
+};
 
    return (
         <>

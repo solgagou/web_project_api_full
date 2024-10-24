@@ -1,4 +1,4 @@
-export const BASE_URL = "http://aroundthesun.jumpingcrab.com";
+export const BASE_URL = "https://aroundthesun.jumpingcrab.com";
 
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
@@ -12,7 +12,7 @@ export const login = (email, password) => {
     .then((response) => {
       if (!response.ok) {
         return response.json().then((err) => {
-        throw new Error("Error en el inicio de sesión");
+        throw new Error(err.message || "Error en el inicio de sesión");
       });
       }
       return response.json();
