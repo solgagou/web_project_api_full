@@ -33,6 +33,7 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   .catch((error) => console.log('Error de conexión a MongoDB:', error));
 
 app.post('/signin', celebrate({
+  console.log(req.body);
   body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
