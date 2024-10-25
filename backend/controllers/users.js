@@ -37,6 +37,7 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
+  console.log(req.user)
   User.findById(req.user._id)
     .then(user => {
       if (!user) {
@@ -90,9 +91,7 @@ module.exports.updateAvatar = (req, res, next) => {
 }
 
 module.exports.login = (req, res, next) => {
-  console.log('Datos recibidos en /signin:', req.body);
   const { email, password } = req.body;
-  console.log('Datos recibidos en el login:', { email, password });
 
   return User.findUserByCredentials(email, password)
     .then((user) => {

@@ -99,8 +99,10 @@
         }
       };
     
-      fetchCards(); 
-    }, []); 
+      if (isLoggedIn) {
+        fetchCards(); 
+      }
+    }, [isLoggedIn]);
     
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true);

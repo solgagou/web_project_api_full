@@ -36,7 +36,6 @@ const Login = ({ handleLoginClick }) => {
       }
   } catch (err) {
       console.error('Error al iniciar sesión:', err.message || err);
-      alert('Credenciales incorrectas. Por favor, inténtalo de nuevo.');
   }
 };
 

@@ -7,7 +7,7 @@ const auth = require('./middlewares/auth');
 const errorHandler = require('./middlewares/errorHandler');
 const { celebrate, Joi, errors } = require('celebrate');
 const { validateUser } = require('./middlewares/validators');
-const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { requestLogger } = require('./middlewares/logger');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -18,9 +18,9 @@ app.options('*', cors());
 
 app.use(express.json());
 
-app.use((err, req, res, next) => {
+/*app.use((err, req, res, next) => {
   res.status(err.status || 500).send({ message: err.message || 'Error en el servidor' });
-});
+});*/
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -33,15 +33,14 @@ mongoose.connect('mongodb://localhost:27017/aroundb')
   .catch((error) => console.log('Error de conexión a MongoDB:', error));
 
 app.post('/signin', celebrate({
-  console.log(req.body);
-  body: Joi.object().keys({
+    body: Joi.object().keys({
     email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
   }),
 }), login);
 app.post('/signup', validateUser, createUser);
 
-app.use(auth);
+//app.use(auth);
 
 app.use(requestLogger);
 
