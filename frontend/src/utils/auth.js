@@ -1,5 +1,5 @@
-export const BASE_URL = "http://localhost:3001";
-
+export const BASE_URL = process.env.NODE_ENV==="development"?"http://localhost:3001":"https://aroundthesun.jumpingcrab.com";
+console.log(process.env.NODE_ENV)
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
