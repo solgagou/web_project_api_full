@@ -46,17 +46,25 @@
 
     const checkAuth = async () => {
       const token = localStorage.getItem("jwt");
+      console.log(token);
       if (token) {
         try { 
           const userData = await auth.getUserProfile(token);
           if (userData) {
-            setCurrentUser(userData);
+            //setCurrentUser(userData);
+          setCurrentUser({
+          name: userData.name || '',
+          about: userData.about || '',
+          avatar: userData.avatar || ''  
+        });
             setIsLoggedIn(true);
            //navigate("/users/me"); 
             }
           } catch (err) {
             console.error("Error verificando token:", err);
             setIsLoggedIn(false);
+            localStorage.removeItem("jwt"); // Eliminar el token inválido
+            navigate('/signin');
           }
       } else {
         console.error('No se encontró el token de autenticación');
@@ -134,7 +142,16 @@
     async function handleUpdateUser(userData) {
       try {
         const updatedUser = await auth.setUserInfo(userData)
-        setCurrentUser(updatedUser);
+        if (updatedUser) {
+         //setCurrentUser(userData);
+         setCurrentUser({
+          name: updatedUser.name || '',  
+        about: updatedUser.about || '', 
+        avatar: updatedUser.avatar || ''  
+        });
+      } else {
+        console.error('No se recibieron datos actualizados');
+      }
         handleCloseAllPopups();
       } catch(err) {
         console.error(`Error al actualizar el perfil: ${err}`);
@@ -144,7 +161,16 @@
     function handleUpdateAvatar(avatar) {
       auth.setUserAvatar({avatar})
       .then((updatedUser) => {
-        setCurrentUser(updatedUser);
+        if (updatedUser) {
+         //setCurrentUser(userData);
+         setCurrentUser({
+          name: updatedUser.name || '',   
+          about: updatedUser.about || '', 
+          avatar: updatedUser.avatar || ''
+        });
+      } else {
+        console.error('No se recibieron datos actualizados');
+      }
         handleCloseAllPopups();
       })
       .catch((err) => {

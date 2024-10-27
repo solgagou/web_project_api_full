@@ -1,5 +1,6 @@
 export const BASE_URL = process.env.NODE_ENV==="development"?"http://localhost:3001":"https://aroundthesun.jumpingcrab.com";
 console.log(process.env.NODE_ENV)
+
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
@@ -20,6 +21,7 @@ export const login = (email, password) => {
     .then((data) => {
       if (data.token) {
         localStorage.setItem("jwt", data.token);  
+        console.log("Token almacenado:", data.token);
         return data;
       } else {
         throw new Error("Token no recibido");
@@ -56,7 +58,8 @@ export const login = (email, password) => {
   });
 };
 
-  export const getUserProfile = (token) => {
+  export const getUserProfile = () => {
+    const token = localStorage.getItem("jwt");
     return fetch(`${BASE_URL}/users/me`, {
       method: "GET",
       headers: {
