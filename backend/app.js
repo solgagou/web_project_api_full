@@ -41,7 +41,7 @@ app.post('/signin', celebrate({
 }), login);
 app.post('/signup', validateUser, createUser);
 
-//app.use(auth);
+app.use(auth);
 
 app.use(requestLogger);
 

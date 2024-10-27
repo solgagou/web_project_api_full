@@ -104,6 +104,7 @@ export const login = (email, password) => {
 
   export const setUserAvatar = (data) => {
     const token = localStorage.getItem("jwt");
+    console.log('Token:', token);
     return fetch(`${BASE_URL}/users/me/avatar`, {
       method: "PATCH",
       headers: {
@@ -115,6 +116,8 @@ export const login = (email, password) => {
       }),
     })
     .then((res) => {
+      console.log('Response:', res);
+      console.log('Status:', res.status);
       if (!res.ok) {
         throw new Error(`Error: ${res.status}`);
       }
