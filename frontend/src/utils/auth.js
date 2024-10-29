@@ -1,4 +1,4 @@
-export const BASE_URL = process.env.NODE_ENV==="development"?"http://localhost:3001":"https://aroundthesun.jumpingcrab.com";
+export const BASE_URL = process.env.NODE_ENV==="development"?"http://localhost:3001":"https://api.aroundthesun.jumpingcrab.com";
 console.log(process.env.NODE_ENV)
 
 export const login = (email, password) => {

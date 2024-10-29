@@ -13,8 +13,8 @@ const userSchema = {
     name: Joi.string().min(2).max(30).default('Jacques Cousteau'),
     about: Joi.string().min(2).max(30).default('Explorador'),
     avatar: Joi.string().custom(validateURL).default('https://practicum-content.s3.us-west-1.amazonaws.com/resources/moved_avatar_1604080799.jpg'),
-    email: Joi.string().email().required(),
-    password: Joi.string().min(8).required(),
+   /* email: Joi.string().email().required(),
+    password: Joi.string().min(8).required(),*/
   }),
 };
 

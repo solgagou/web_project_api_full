@@ -13,7 +13,7 @@ router.get('/:userId', auth, celebrate({
 }), getUser)
 
 router.patch('/me', auth, validateUser, updateProfile);
-router.patch('/me/avatar', auth, validateUser, updateAvatar);
+router.patch('/me/avatar', auth, updateAvatar);
 
 
 module.exports = router;

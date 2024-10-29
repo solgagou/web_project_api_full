@@ -39,7 +39,7 @@ app.post('/signin', celebrate({
     password: Joi.string().min(8).required(),
   }),
 }), login);
-app.post('/signup', validateUser, createUser);
+app.post('/signup', createUser);
 
 app.use(auth);
 

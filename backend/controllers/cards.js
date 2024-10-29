@@ -2,16 +2,16 @@ const Card = require('../models/card');
 //const validator = require('validator');
 
 module.exports.getCards = (req, res, next) => {
-  Card.Card.find()
+  Card.find()
     .populate('owner')
     .then(cards => res.send(cards))
     .catch(next); // antes: (err => res.status(500).send({ message: 'Error al obtener las tarjetas' }));
 };
 
 module.exports.createCard = (req, res, next) => {
-   const { name, link, owner: _id } = req.body;
+   const { name, link } = req.body;
 
-  Card.create({ name, link, owner })
+  Card.create({ name, link, owner: req.user._id })
   .then(card => res.status(201).send(card))
   .catch(next);
 };
