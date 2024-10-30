@@ -37,7 +37,6 @@ module.exports.getUser = (req, res, next) => {
 };
 
 module.exports.getCurrentUser = (req, res, next) => {
-  console.log(req.user)
   User.findById(req.user._id)
     .then(user => {
       if (!user) {
@@ -56,7 +55,7 @@ module.exports.updateProfile = (req, res, next) => {
   /*if (req.user._id !== req.params.userId) {
     return res.status(403).send({ message: 'No tienes permisos para editar este perfil.' });
   }*/
-  console.log(req.user._id)
+
   User.findByIdAndUpdate(req.user._id,
     { name, about },
     { new: true, runValidators: true }
@@ -74,7 +73,6 @@ module.exports.updateProfile = (req, res, next) => {
 
 module.exports.updateAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  console.log(req.user)
 
   User.findByIdAndUpdate(req.user._id,
     { avatar },

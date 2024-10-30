@@ -10,7 +10,7 @@ const { validateUser } = require('./middlewares/validators');
 const { requestLogger } = require('./middlewares/logger');
 const cors = require('cors');
 require('dotenv').config();
-console.log(process.env.JWT_SECRET);
+//console.log(process.env.JWT_SECRET);
 
 const app = express();
 

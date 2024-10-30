@@ -10,13 +10,13 @@ module.exports = (req, res, next) => {
   }
 
   const token = authorization.replace('Bearer ', '');
-  console.log('Token:', token);
-  console.log('JWT_SECRET:', process.env.JWT_SECRET);
+  //console.log('Token:', token);
+  //console.log('JWT_SECRET:', process.env.JWT_SECRET);
   let payload;
 
   try {
     payload = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Payload del token:', payload);
+    //console.log('Payload del token:', payload);
   } catch (err) {
     return res
       .status(403)

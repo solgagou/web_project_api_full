@@ -1,5 +1,5 @@
 export const BASE_URL = process.env.NODE_ENV==="development"?"http://localhost:3001":"https://api.aroundthesun.jumpingcrab.com";
-console.log(process.env.NODE_ENV)
+//console.log(process.env.NODE_ENV)
 
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
@@ -21,7 +21,7 @@ export const login = (email, password) => {
     .then((data) => {
       if (data.token) {
         localStorage.setItem("jwt", data.token);  
-        console.log("Token almacenado:", data.token);
+        //console.log("Token almacenado:", data.token);
         return data;
       } else {
         throw new Error("Token no recibido");
@@ -104,7 +104,7 @@ export const login = (email, password) => {
 
   export const setUserAvatar = (data) => {
     const token = localStorage.getItem("jwt");
-    console.log('Token:', token);
+   //console.log('Token:', token);
     return fetch(`${BASE_URL}/users/me/avatar`, {
       method: "PATCH",
       headers: {
@@ -116,8 +116,8 @@ export const login = (email, password) => {
       }),
     })
     .then((res) => {
-      console.log('Response:', res);
-      console.log('Status:', res.status);
+      //console.log('Response:', res);
+      //console.log('Status:', res.status);
       if (!res.ok) {
         throw new Error(`Error: ${res.status}`);
       }

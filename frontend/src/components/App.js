@@ -46,7 +46,6 @@
 
     const checkAuth = async () => {
       const token = localStorage.getItem("jwt");
-      console.log(token);
       if (token) {
         try { 
           const userData = await auth.getUserProfile(token);
@@ -87,7 +86,6 @@
 
      async function handleLoginClick() {
       setIsLoggedIn(true);
-      console.log("Logging in...");
       await checkAuth();
     }
 
