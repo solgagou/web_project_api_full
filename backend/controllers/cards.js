@@ -19,19 +19,32 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
+  if (!cardId) {
+    return res.status(400).send({ message: 'ID de tarjeta no proporcionado' });
+  }
+  console.log('Intentando eliminar tarjeta con ID:', cardId);
+
   Card.findById(cardId)
-  .orFail(() => {
-    throw new CustomError('Tarjeta no encontrada', 404);
+    .orFail(() => {
+      const error = new CustomError('Tarjeta no encontrada', 404);
+      throw error;
     })
     .then(card => {
+      console.log('Tarjeta encontrada:', card);
       if (card.owner.toString() !== req.user._id.toString()) {
-        throw new CustomError('No tienes permisos para eliminar esta tarjeta.', 403);
+        const error = new CustomError('No tienes permisos para eliminar esta tarjeta.', 403);
+        throw error;
       }
-
-     return Card.findByIdAndRemove(cardId)
-    .then(() => res.send({ message: 'Tarjeta eliminada exitosamente' }));
+      return Card.findByIdAndRemove(cardId);
     })
-    .catch(next);
+    .then(() => {
+      console.log('Tarjeta eliminada exitosamente');
+      res.send({ message: 'Tarjeta eliminada exitosamente' });
+    })
+    .catch(err => {
+      console.error('Error en deleteCard:', err);
+      next(err);
+  });
 };
 
 module.exports.likeCard = (req, res, next) => {

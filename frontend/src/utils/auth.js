@@ -172,7 +172,7 @@ export const login = (email, password) => {
   export const changeLikeCardStatus = (cardId, like) => {
     const token = localStorage.getItem("jwt");
     const method = like ? "PUT" : "DELETE";
-    return fetch(`${BASE_URL}/cards/likes/${cardId}`, {
+    return fetch(`${BASE_URL}/cards/${cardId}/likes`, {
       method,
       headers: {
         Authorization: `Bearer ${token}`,
