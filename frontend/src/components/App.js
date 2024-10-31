@@ -54,7 +54,8 @@
           setCurrentUser({
           name: userData.name || '',
           about: userData.about || '',
-          avatar: userData.avatar || ''  
+          avatar: userData.avatar || '',
+           _id: userData._id || ''
         });
             setIsLoggedIn(true);
            //navigate("/users/me"); 

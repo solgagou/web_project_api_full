@@ -5,6 +5,18 @@ import crossImage from '../images/red_cross_icon.png';
 
 function InfoTooltip({ isOpen, onClose, isSuccess }) {
   //console.log("InfoTooltip - isOpen:", isOpen); 
+  React.useEffect(() => {
+    let timer;
+    if (isOpen) {
+      
+      timer = setTimeout(() => {
+        onClose();
+      }, 2000);
+    }
+
+  
+    return () => clearTimeout(timer);
+  }, [isOpen, onClose]);
 return (
     <div className={`popup ${isOpen ? 'popup_opened' : ''}`}>
     <div className="popup__register-content">
