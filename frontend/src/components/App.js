@@ -51,11 +51,12 @@
           const userData = await auth.getUserProfile(token);
           if (userData) {
             //setCurrentUser(userData);
+            console.log(userData)
           setCurrentUser({
           name: userData.name || '',
           about: userData.about || '',
           avatar: userData.avatar || '',
-           _id: userData._id || ''
+          _id: userData._id || ''
         });
             setIsLoggedIn(true);
            //navigate("/users/me"); 
@@ -146,7 +147,8 @@
          setCurrentUser({
           name: updatedUser.name || '',  
         about: updatedUser.about || '', 
-        avatar: updatedUser.avatar || ''  
+        avatar: updatedUser.avatar || '',
+        _id: updatedUser._id || '' 
         });
       } else {
         console.error('No se recibieron datos actualizados');
@@ -165,7 +167,8 @@
          setCurrentUser({
           name: updatedUser.name || '',   
           about: updatedUser.about || '', 
-          avatar: updatedUser.avatar || ''
+          avatar: updatedUser.avatar || '',
+          _id: updatedUser._id || '' 
         });
       } else {
         console.error('No se recibieron datos actualizados');
@@ -189,12 +192,18 @@
     }
 
     function handleCardLike(card) {
-      const isLiked = card.likes.some(i => i._id === currentUser._id);
+      const isLiked = card.likes.some(i => i === currentUser._id);
       
       auth.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-      });
+        setCards((state) => state.map((c) => {
+          return c._id === card._id ? {
+            ...newCard,
+            owner: c.owner
+  } : c
+      }));
+    });
   }
+
     function handleCardDelete(card) {
     auth.deleteCard(card._id)
       .then(() => {

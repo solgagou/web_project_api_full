@@ -4,16 +4,18 @@ import trashIcon from '../images/trash_icon.png';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ _id, name, link, likes, card, onCardClick, onCardLike, onCardDelete }) {
+  console.log(card.owner)
   const { currentUser } = React.useContext(CurrentUserContext);
-  console.log('Current user:', currentUser);
+  //console.log('Current user:', currentUser);
 
   const isOwn = card.owner._id === currentUser._id;
-  console.log('Card owner ID:', card.owner._id, 'Current user ID:', currentUser._id);
+  //console.log(isOwn)
+  //console.log('Card owner ID:', card.owner._id, 'Current user ID:', currentUser._id);
   const cardDeleteButtonClassName = (
     `card__delete-button ${isOwn ? 'card__delete-button_visible' : 'card__delete-button_hidden'}`
   );
 
-  const isLiked = card.likes.some(i => i._id === currentUser._id);
+  const isLiked = card.likes.some(i => i === currentUser._id);
   const cardLikeButtonClassName = (
     `card__like-button ${isLiked ? 'card__like-button_active' : ''}`);
    
