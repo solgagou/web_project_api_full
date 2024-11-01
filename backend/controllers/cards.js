@@ -35,7 +35,7 @@ module.exports.deleteCard = (req, res, next) => {
         const error = new CustomError('No tienes permisos para eliminar esta tarjeta.', 403);
         throw error;
       }
-      return Card.findByIdAndRemove(cardId);
+      return Card.findByIdAndDelete(cardId);
     })
     .then(() => {
       console.log('Tarjeta eliminada exitosamente');

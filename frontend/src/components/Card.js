@@ -4,7 +4,6 @@ import trashIcon from '../images/trash_icon.png';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card({ _id, name, link, likes, card, onCardClick, onCardLike, onCardDelete }) {
-  console.log(card.owner)
   const { currentUser } = React.useContext(CurrentUserContext);
   //console.log('Current user:', currentUser);
 

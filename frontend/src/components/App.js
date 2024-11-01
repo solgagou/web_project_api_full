@@ -3,7 +3,7 @@
   import Header from './Header.js'
   //import Card from './Card';
   import Footer from './Footer.js'
-  import React from 'react';
+  import React, { useCallback } from 'react';
   import ImagePopup from './ImagePopup.js';
   import EditProfilePopup from './EditProfilePopup.js';
   import EditAvatarPopup from './EditAvatarPopup.js';
@@ -16,18 +16,6 @@
   import ProtectedRoute from "./ProtectedRoute"; 
   import * as auth from "../utils/auth.js";
 
-  /*const UserProfile = () => {
-    const { currentUser } = React.useContext(CurrentUserContext);
-
-    return (
-      <div className="user-profile">
-        <h1>{currentUser.name}</h1>
-        <p>{currentUser.about}</p>
-        <img src={currentUser.avatar} alt="Avatar" />
-      </div>
-    );
-  };*/
-
   function App() {
     const [currentUser, setCurrentUser] = React.useState({name: '', about:'', avatar:'' });
     const [cards, setCards] = React.useState([]);
@@ -37,21 +25,18 @@
     const [selectedCard, setSelectedCard] = React.useState({});
     const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-    //const [isRegistered, setIsRegistered] = React.useState(false);
-    //const [isRegisteredUser, setIsRegisteredUser] = React.useState(false);
     const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
     const [registrationSuccess, setRegistrationSuccess] = React.useState(false);
     const navigate = useNavigate();
     
 
-    const checkAuth = async () => {
+    const checkAuth = useCallback(async () => { 
       const token = localStorage.getItem("jwt");
       if (token) {
         try { 
           const userData = await auth.getUserProfile(token);
           if (userData) {
-            //setCurrentUser(userData);
-            console.log(userData)
+                  
           setCurrentUser({
           name: userData.name || '',
           about: userData.about || '',
@@ -64,18 +49,18 @@
           } catch (err) {
             console.error("Error verificando token:", err);
             setIsLoggedIn(false);
-            localStorage.removeItem("jwt"); // Eliminar el token inválido
+            localStorage.removeItem("jwt"); 
             navigate('/signin');
           }
       } else {
         console.error('No se encontró el token de autenticación');
         setIsLoggedIn(false);
       }
-    };
+    }, [navigate])
 
       React.useEffect(() => {
         checkAuth();  
-      }, []);
+      }, [checkAuth]); 
 
       
     React.useEffect(() => {

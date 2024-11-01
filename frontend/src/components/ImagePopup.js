@@ -30,7 +30,7 @@ function ImagePopup({ name, link, isOpen, onClose }) {
   
   return (
     <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-    <div class="popup__content" ref={popupRef}>
+    <div className="popup__content" ref={popupRef}>
       <img
         className={"popup__close-button"}
         src={closeIcon}
@@ -41,7 +41,7 @@ function ImagePopup({ name, link, isOpen, onClose }) {
       <img className="popup__image" 
       src={link} 
       alt="Vista grande de una imagen seleccionada" />
-      <h2 class="popup__title">{name}</h2>
+      <h2 className="popup__title">{name}</h2>
     </div>
   </div>
     )
