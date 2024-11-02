@@ -14,13 +14,31 @@ require('dotenv').config();
 const app = express();
 
 
-const allowedOrigins = [
+/*const allowedOrigins = [
   'http://localhost:3000',
   'https://aroundthesun.jumpingcrab.com',
    'https://www.aroundthesun.jumpingcrab.com'
 ];
 
-const corsOptions = {origin: allowedOrigins, optionsSuccessStatus:200}
+const corsOptions = {origin: allowedOrigins, optionsSuccessStatus:200}*/
+
+
+const allowedDomains = ['http://localhost:3000', 'https://aroundthesun.jumpingcrab.com',
+   'https://www.aroundthesun.jumpingcrab.com'];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedDomains.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('No permitido por CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 
 /*// Configuración de CORS
 const corsOptions = {
@@ -37,7 +55,7 @@ const corsOptions = {
    credentials: true
 };*/
 
-app.options('*', cors(corsOptions))
+/*app.options('*', cors(corsOptions))*/
 
 app.use(express.json());
 
