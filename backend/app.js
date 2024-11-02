@@ -20,6 +20,8 @@ const allowedOrigins = [
    'https://www.aroundthesun.jumpingcrab.com'
 ];
 
+const corsOptions = {origin: allowedOrigins, optionsSuccessStatus:200}
+
 /*// Configuración de CORS
 const corsOptions = {
   origin: (origin, callback) => {
@@ -35,7 +37,7 @@ const corsOptions = {
    credentials: true
 };*/
 
-app.use(cors(allowedOrigins));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
