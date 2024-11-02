@@ -10,18 +10,34 @@ const { validateUser } = require('./middlewares/validators');
 const { requestLogger } = require('./middlewares/logger');
 const cors = require('cors');
 require('dotenv').config();
-//console.log(process.env.JWT_SECRET);
 
 const app = express();
 
-app.use(cors());
-app.options('*', cors());
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://aroundthesun.jumpingcrab.com',
+   'https://www.aroundthesun.jumpingcrab.com'
+];
+
+/*// Configuración de CORS
+const corsOptions = {
+  origin: (origin, callback) => {
+    // Permite solicitudes de cualquier origen en desarrollo o si está en la lista de permitidos
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: ['Content-Type', 'Authorization'],
+   credentials: true
+};*/
+
+app.use(cors(allowedOrigins));
 
 app.use(express.json());
-
-/*app.use((err, req, res, next) => {
-  res.status(err.status || 500).send({ message: err.message || 'Error en el servidor' });
-});*/
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -40,6 +56,23 @@ app.post('/signin', celebrate({
   }),
 }), login);
 app.post('/signup', createUser);
+
+/*}), (req, res, next) => {
+  // Añadir encabezados CORS a la respuesta
+  res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  // Llama al controlador de inicio de sesión
+  login(req, res, next);
+});
+
+app.post('/signup', (req, res, next) => {
+  // Añadir encabezados CORS a la respuesta
+  res.header("Access-Control-Allow-Origin", req.headers.origin || '*');
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+  createUser(req, res, next);
+});*/
 
 app.use(auth);
 
