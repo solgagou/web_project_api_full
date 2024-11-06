@@ -7,7 +7,7 @@ function Card({ _id, name, link, likes, card, onCardClick, onCardLike, onCardDel
   const { currentUser } = React.useContext(CurrentUserContext);
   //console.log('Current user:', currentUser);
 
-  const isOwn = card.owner._id === currentUser._id;
+  const isOwn = card.owner._id === currentUser._id || card.owner === currentUser._id;
   //console.log(isOwn)
   //console.log('Card owner ID:', card.owner._id, 'Current user ID:', currentUser._id);
   const cardDeleteButtonClassName = (
